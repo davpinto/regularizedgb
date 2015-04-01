@@ -1,6 +1,6 @@
 # Regularized Gaussian Bayes Classifier for High Dimensional Data
 
-regularizedgb provides a fast and accurate Gaussian Bayes classifier for high-dimensional problems. regularizedgb will be provided as a R package soon.
+regGaussianBayes.R provides a fast and accurate Gaussian Bayes classifier for high-dimensional problems. The repository regularizedgb will be provided as a R package soon.
 
 ## How to use
 
