@@ -5,15 +5,16 @@ rm(list=ls())
 # setwd("")
 
 # --- Libraries ---
-library('mlbench')      # Datasets
-library("e1071")        # Naive-Bayes and SVM tuning
-library('kernlab')      # SVM
-library('randomForest') # Random Forest
-library('adabag')       # Adaboost
-library("corpcor")      # Shrunken Covariance
-library("pROC")         # Compute AUC 
-library('Rcpp')         # C++ functions
-library('RcppArmadillo')
+library('plyr')          # Data wrangling
+library('mlbench')       # Classification Datasets
+library("e1071")         # Naive-Bayes and SVM tuning
+library('kernlab')       # SVM
+library('randomForest')  # Random Forest
+library('adabag')        # Adaboost
+library("corpcor")       # Shrinkage Covariance Estimator
+library("pROC")          # Compute AUC 
+library('Rcpp')          # C++ functions
+library('RcppArmadillo') # C++ Linear Algebra
 
 # --- External Functions ---
 source('normInputData.R')
@@ -23,13 +24,13 @@ sourceCpp('fastMVNDensity.cpp')       # PS: use mvnDensity instead for a R only 
 
 # --- Load Dataset ---
 # -- Dataset 1: Vehicle --
-data('Vehicle')
-x <- data.matrix(Vehicle[,-19]);
-y <- Vehicle$Class;
-rm(list='Vehicle')
+# data('Vehicle')
+# x <- data.matrix(Vehicle[,-19]);
+# y <- Vehicle$Class;
+# rm(list='Vehicle')
 # -- Dataset 2: Iris --
-# x <- data.matrix(iris[,-5]);
-# y <- iris$Species;
+x <- data.matrix(iris[,-5]);
+y <- iris$Species;
 
 # --- Data Column-wise normalization ---
 x <- normInputData(x,type='std');
@@ -48,9 +49,9 @@ y.test  <- data$y.te;
 
 # --- Regularized Gaussian Bayes ---
 rgb.time <- system.time({
-   rgb.model <- rgbc.fit(x.train,y.train);
+   rgb.model <- rgbc(x.train,y.train);
 });
-rgb.perf <- rgbc.predict(rgb.model,x.test,y.test);
+rgb.perf <- predict(rgb.model,x.test,y.test);
 
 # --- Naive-Bayes ---
 gnb.time <- system.time({

@@ -3,8 +3,8 @@
 # Covariance Matrix Estimation
 #
 # USAGE: 
-# gb.model <- rgbc.fit(x.train,y.train);
-# gb.resp  <- rgbc.predict(model,x.test,y.test);
+# gb.model <- rgbc(x.train, y.train);
+# gb.resp  <- predict(model, x.test, y.test);
 #
 # REFERENCES:
 # 1. "A well conditioned estimator for large-dimensional 
@@ -19,7 +19,7 @@
 # Nov. 16, 2014 at 16:03
 # ============================================================
 
-rgbc.fit <- function(x,y)
+rgbc <- function(x,y)
 {
    buildGaussModel <- function(label,x,y)
    {
@@ -43,10 +43,10 @@ rgbc.fit <- function(x,y)
    labels <- as.factor(y);
    model  <- lapply(levels(labels), FUN=buildGaussModel, x=x, y=labels);
       
-   return(model)
+   return( structure(model, class='rgbc') )
 }
 
-rgbc.predict <- function(model,x,y)
+predict.rgbc <- function(model,x,y)
 {
    computePosteriori <- function(model,x)
    {
@@ -80,7 +80,7 @@ computeClassPerformance <- function(resp, pred)
    # --- Classification AUC (Area Under the ROC Curve) ---
    auc <- as.numeric( pROC::multiclass.roc(resp,pred,levels=resp[!duplicated(resp)])$auc );
    
-   return(list(acc=acc,auc=auc))
+   return(list(acc=acc, auc=auc))
 }
 
 mvnDensity <- function(x,mu,sig)
