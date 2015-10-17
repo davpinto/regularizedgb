@@ -5,7 +5,6 @@ rm(list=ls())
 # setwd("")
 
 # --- Libraries ---
-library('plyr')          # Data wrangling
 library('mlbench')       # Classification Datasets
 library("e1071")         # Naive-Bayes and SVM tuning
 library('kernlab')       # SVM
